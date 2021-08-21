@@ -1,10 +1,10 @@
-from config import APP_CONFIG
+from .config import APP_CONFIG
 from enum import Enum
 
 from dostoevsky.tokenization import RegexTokenizer
 from dostoevsky.models import FastTextSocialNetworkModel
 
-from instaclient import cl
+from .instaclient import cl
 
 # Class for different sentiments 
 class Sentiment(Enum):

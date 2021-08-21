@@ -1,5 +1,5 @@
 from instagrapi import Client
-from config import APP_CONFIG
+from .config import APP_CONFIG
 
 # Instagram client 
 cl = Client()
