@@ -33,12 +33,12 @@ class ComposedFilter(Filter):
 # Filter that returns only the values that are greater than a given value
 class GEFilter(CharacteristicFilter):
   def __init__(self, value):
-    CharacteristicFilter.__init__(self, lambda x: x >= value)
+    CharacteristicFilter.__init__(self, lambda x: x >= value if x is not None else True)
 
 # Filter that returns only the values that are less than a given value
 class LEFilter(CharacteristicFilter):
   def __init__(self, value):
-    CharacteristicFilter.__init__(self, lambda x: x <= value)
+    CharacteristicFilter.__init__(self, lambda x: x <= value if x is not None else True)
 
 # Filter that allows only the values in the given range
 class RangeFilter(ComposedFilter):
