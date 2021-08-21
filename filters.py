@@ -1,5 +1,5 @@
-import utils.monoidal_filters as mf
-import utils.catamorphism as cata
+from .utils import monoidal_filters as mf
+from .utils import catamorphism as cata
 
 def maybe_le(hi: int) -> mf.Filter:
   return cata.none_cata(hi, mf.IdFilter(), mf.LEFilter)

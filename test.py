@@ -1,4 +1,4 @@
-from filters import *
+from .filters import *
 
 params = {
   'query': "",
