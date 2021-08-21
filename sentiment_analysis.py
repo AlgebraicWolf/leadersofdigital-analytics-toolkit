@@ -4,9 +4,7 @@ from enum import Enum
 from dostoevsky.tokenization import RegexTokenizer
 from dostoevsky.models import FastTextSocialNetworkModel
 
-from instagrapi import Client
-
-from config import APP_CONFIG
+from instaclient import cl
 
 # Class for different sentiments 
 class Sentiment(Enum):
@@ -14,13 +12,8 @@ class Sentiment(Enum):
   NEUTRAL = 2
   NEGATIVE = 3 
 
-# TODO Pull comments from a YouTube video
-
 # Pull comments from an instagram post
 def pull_instagram_comments(url: str):
-  cl = Client()
-  cl.login(APP_CONFIG['INSTA_LOGIN'], APP_CONFIG['INSTA_PASS'])
-
   media_id = cl.media_id(cl.media_pk_from_url(url))
   comments = cl.media_comments(media_id)
   return list(map(lambda x: x.text, comments))
@@ -64,3 +57,11 @@ def calculate_statistics(msgs: list[Sentiment]) -> dict[str, float]:
   result['negative'] = calculate_percentage(msgs, Sentiment.NEGATIVE)
 
   return result
+
+def get_geoposition_instagram_stats(lat: float, lng: float, date_at_least: datetime.datetime):
+  loc_guess = cl.location_search(lat, lng)[0]  # Taking the closes location is good enough for PoC 
+  loc_guess = cl.location_complete(loc_guess)  # Fill in important fields
+
+  posts = cl.location_medias_recent(loc_guess.pk, amount)
+  post_dates = list(map(lambda x: x.taken_at, posts))
+  return post_dates
