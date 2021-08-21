@@ -1,5 +1,7 @@
 import utils.monoidal_filters as mf
 import utils.catamorphism as cata
+from dateutil import parser
+from datetime import datetime, timedelta
 
 def maybe_le(hi: int) -> mf.Filter:
   return cata.none_cata(hi, mf.IdFilter(), mf.LEFilter)
@@ -18,14 +20,15 @@ def make_user_filter(params):
   subs_filter = mf.FocusedFilter('subs', maybe_range(params['subs_lo'], params['subs_hi']))
   likes_filter = mf.FocusedFilter('avg_likes', maybe_ge(params['avg_likes']))
   views_filter = mf.FocusedFilter('avg_view', maybe_ge(params['avg_view']))
-  # TODO Add filter based on the date of last submission 
+  date_filter = mf.FocusedFilter('date_last_post', mf.GEFilter(datetime.now() - timedelta(weeks=1)))
 
-  return subs_filter * likes_filter * views_filter
+  return subs_filter * likes_filter * views_filter * date_filter
 
 # Function that filters given list of users
 def filter_users(params, users):
-  params = average_field('view', params)
-  params = average_field('likes', params)
+  users = average_field('view', users)
+  users = average_field('likes', users)
+  users = list(map(parse_datetime, users))
   filtered = make_user_filter(params).filt(users)
 
   return list(map(add_wellness, filtered))
@@ -33,6 +36,11 @@ def filter_users(params, users):
 # Function that adds wellness metric
 def add_wellness(user) -> float:
   user['wellness'] = wellness(user)
+  return user
+
+# Function that parses datetime 
+def parse_datetime(user):
+  user['date_last_post'] = parser.parse(user['date_last_post'])
   return user
 
 # Function that calculates an obscure wellness metric for a given blogger 
