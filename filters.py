@@ -15,9 +15,9 @@ def maybe_range(lo: int, hi: int) -> mf.Filter:
 
 # Creates filter object with given settings 
 def make_user_filter(params):
-  subs_filter = mf.FocusedFilter('followers', maybe_range(params['subs_lo'], params['subs_hi']))
+  subs_filter = mf.FocusedFilter('subs', maybe_range(params['subs_lo'], params['subs_hi']))
   likes_filter = mf.FocusedFilter('avg_likes', maybe_ge(params['avg_likes']))
-  views_filter = mf.FocusedFilter('avg_views', maybe_ge(params['avg_views']))
+  views_filter = mf.FocusedFilter('avg_view', maybe_ge(params['avg_view']))
   # TODO Add filter based on the date of last submission 
 
   return subs_filter * likes_filter * views_filter
@@ -26,7 +26,18 @@ def make_user_filter(params):
 def filter_users(params, users):
   params = average_field('view', params)
   params = average_field('likes', params)
-  return make_user_filter(params).filt(users)
+  filtered = make_user_filter(params).filt(users)
+
+  return list(map(add_wellness, filtered))
+
+# Function that adds wellness metric
+def add_wellness(user) -> float:
+  user['wellness'] = wellness(user)
+  return user
+
+# Function that calculates an obscure wellness metric for a given blogger 
+def wellness(user) -> float:
+  return 0.93
 
 # Calculate average for a given field in the structure 
 def average_field(field, structs):
