@@ -19,7 +19,7 @@ def maybe_range(lo: int, hi: int) -> mf.Filter:
 def make_user_filter(params):
   subs_filter = mf.FocusedFilter('followers', maybe_range(params['subs_lo'], params['subs_hi']))
   likes_filter = mf.FocusedFilter('avg_likes', maybe_ge(params['avg_likes']))
-  views_filter = mf.FocusedFilter('avg_views', maybe_ge(params['avg_view']))
+  views_filter = mf.FocusedFilter('avg_views', maybe_ge(params['avg_views']))
   date_filter = mf.FocusedFilter('date_last_post', mf.GEFilter(datetime.now() - timedelta(weeks=1)))
 
   return subs_filter * likes_filter * views_filter * date_filter
