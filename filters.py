@@ -1,5 +1,5 @@
-import utils.monoidal_filters as mf
-import utils.catamorphism as cata
+from .utils import monoidal_filters as mf
+from .utils import catamorphism as cata
 from dateutil import parser
 from datetime import datetime, timedelta
 
