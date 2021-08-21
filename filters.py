@@ -37,7 +37,9 @@ def add_wellness(user) -> float:
 
 # Function that calculates an obscure wellness metric for a given blogger 
 def wellness(user) -> float:
-  return 0.93
+  wellness_smth = user['avg_likes'] / user['subs']
+  return min(1.00, wellness_smth / 0.05)
+
 
 # Calculate average for a given field in the structure 
 def average_field(field, structs):
