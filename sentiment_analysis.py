@@ -13,10 +13,20 @@ class Sentiment(Enum):
   NEGATIVE = 3 
 
 # Pull comments from an instagram post
-def pull_instagram_comments(url: str):
-  media_id = cl.media_id(cl.media_pk_from_url(url))
+def pull_instagram_comments(media_id: str):
   comments = cl.media_comments(media_id, 0)
   return list(map(lambda x: x.text, comments))
+
+def pull_instagram_post_stats(media_pk: int):
+  info = cl.media_info(media_pk)
+  result = dict()
+
+  result['text'] = info.caption_text
+  result['taken_at'] = info.taken_at
+  result['likes'] = info.like_count
+  result['views'] = info.view_count
+
+  return result
 
 # Sentiment analysis wrapper
 # Classes are mapped as follows:
@@ -58,5 +68,13 @@ def calculate_statistics(msgs: list[Sentiment]) -> dict[str, float]:
 
   return result
 
-def calculate_comment_sentiment(url: str) -> dict[str, float]:
-  return calculate_statistics(analyze_messages(pull_instagram_comments(url)))
+def pull_post_data(url: str) -> dict[str, float]:
+  media_pk = cl.media_pk_from_url(url)
+  media_id = cl.media_id(media_pk)
+  
+  result = pull_instagram_post_stats(media_pk)
+
+  user_reaction = calculate_statistics(analyze_messages(pull_instagram_comments(media_id)))
+  result['user_reaction'] = user_reaction
+
+  return result
