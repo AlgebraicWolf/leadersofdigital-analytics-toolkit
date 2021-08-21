@@ -15,7 +15,7 @@ class Sentiment(Enum):
 # Pull comments from an instagram post
 def pull_instagram_comments(url: str):
   media_id = cl.media_id(cl.media_pk_from_url(url))
-  comments = cl.media_comments(media_id)
+  comments = cl.media_comments(media_id, 0)
   return list(map(lambda x: x.text, comments))
 
 # Sentiment analysis wrapper
@@ -57,3 +57,6 @@ def calculate_statistics(msgs: list[Sentiment]) -> dict[str, float]:
   result['negative'] = calculate_percentage(msgs, Sentiment.NEGATIVE)
 
   return result
+
+def calculate_comment_sentiment(url: str) -> dict[str, float]:
+  return calculate_statistics(analyze_messages(pull_instagram_comments(url)))
