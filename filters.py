@@ -24,6 +24,8 @@ def make_user_filter(params):
 
 # Function that filters given list of users
 def filter_users(params, users):
+  params = average_field('view', params)
+  params = average_field('likes', params)
   return make_user_filter(params).filt(users)
 
 # Calculate average for a given field in the structure 
