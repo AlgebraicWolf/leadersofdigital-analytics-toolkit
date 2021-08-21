@@ -53,7 +53,7 @@ def wellness(user) -> float:
 def average_field(field, structs):
   def single_avg(field):
     def single_avg_helper(struct):
-      struct['avg_'+field] = sum(struct[field]) / len(struct[field])
+      struct['avg_'+field] = sum(struct[field]) / len(struct[field]) if struct[field] else None
       return struct
 
     return single_avg_helper
