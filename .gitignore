@@ -130,3 +130,6 @@ dmypy.json
 
 # Config with sensitive data
 config.py
+
+# Piece of shit
+.vscode/
