@@ -1,4 +1,4 @@
-from instaclient import cl
+from .instaclient import cl
 from datetime import datetime, timezone
 from collections import Counter
 
