@@ -1,5 +1,5 @@
 APP_CONFIG = {
-  'INSTA_LOGIN': 'vefajov797',
-  'INSTA_PASS': 'dxrmnbu7tt72',
-  'GAPI_KEY': 'AIzaSyBVY4wYBVZ7dglJCcgs-0tpc6kvthCPHm4',
+  'INSTA_LOGIN': 'YOUR_LOGIN',
+  'INSTA_PASS': 'YOUR_PASSWORD',
+  'GAPI_KEY': 'THIS ONE IS NOT ACTUALLY USED',
 }
